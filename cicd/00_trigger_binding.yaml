@@ -53,7 +53,7 @@ spec:
           value:
             - "apply"
             - "-f"
-            - "./6th_trigger/10_k8s_deploy.yaml"
+            - "./cicd/10_k8s_deploy.yaml"
             # - "10_k8s_deploy.yaml"
             # - "rollout"
             # - "restart"

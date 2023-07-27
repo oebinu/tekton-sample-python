@@ -34,7 +34,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: tekton-sample-python-ingress
+  name: tekton-sample-python-ingres
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     kubernetes.io/ingress.class: nginx
