@@ -1,0 +1,60 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: tekton-sample-python-tb
+spec:
+  params:
+  - name: imagetag
+    value: $(body.head_commit.id)
+  - name: giturl
+    value: $(body.repository.url)
+
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: tekton-sample-python-tt
+spec:
+  params:
+    - name: giturl # git repo url
+    - name: imagetag # image tag in commit message
+  resourcetemplates: # automate create pipelinerun
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: tekton-sample-python-pipe-run-
+      spec:  
+        # serviceAccountName: build-bot # sa for git & docker credientials -> pipeline will use for clone private repo
+        serviceAccountName: tekton-build # sa for git credientials -> pipeline will use for clone private repo
+        pipelineRef: # select pipeline
+          name: tekton-sample-python-pipe
+        podTemplate: # setting taskpod
+          securityContext:  # pod security
+            fsGroup: 65532 # set volume owner gid = 65532
+        workspaces: # volume for clone code
+        - name: shared-data
+          volumeClaimTemplate: # automatically create pvc -> create pv
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 1Gi
+        - name: docker-credentials
+          secret:
+            secretName: docker-credentials
+
+        params: # git address
+        - name: repo-url
+          value: $(tt.params.giturl)
+        - name: image-reference
+          value: cocopopo/tekton-sample:$(tt.params.imagetag)
+        - name: kubectl-args
+          value:
+            - "apply"
+            - "-f"
+            - "./6th_trigger/10_k8s_deploy.yaml"
+            # - "10_k8s_deploy.yaml"
+            # - "rollout"
+            # - "restart"
+            # - "10_k8s_trigger.yaml"  

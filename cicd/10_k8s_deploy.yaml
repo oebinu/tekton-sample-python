@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: tekton-sample-trigger
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels: 
+      app: tekton-trigger
+  template: 
+    metadata: 
+      name: tekton-sample-trigger
+      labels: 
+        app: tekton-trigger
+    spec:
+      containers: 
+      - name: tekton-trigger
+        image: changetagname
+        # image: cocopopo/tekton-sample:v4
+        ports:
+        - containerPort: 80
+      ### 아래를 추가한다
+      imagePullSecrets:
+      - name: docker-credentials
+
+      

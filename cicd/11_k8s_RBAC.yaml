@@ -1,0 +1,36 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: '*'
+  name: tekton-for-deploy
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rolebind-for-deploy
+subjects:
+  - kind: ServiceAccount
+    name: tekton-build
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: tekton-for-deploy
+  apiGroup: rbac.authorization.k8s.io
+
+
+# ---
+
+
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: tekton-sa
+# secrets:
+# - name: git-credential-basic
+# - name: git-credential-ssh

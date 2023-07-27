@@ -1,0 +1,48 @@
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tekton-sample-trigger
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: tekton-trigger
+
+---
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: "HTTP"
+    alb.ingress.kubernetes.io/group.name: "tekton-tirgger"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-2:623534841709:certificate/5d51c51b-7dd8-417e-b59a-e2f57c534d36"
+    alb.ingress.kubernetes.io/subnets: "subnet-02017e956515284df, subnet-0a6939c7212dfe737"
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    # alb.ingress.kubernetes.io/healthcheck-path: /app1
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    # alb.ingress.kubernetes.io/security-groups: "sg-0f3dab3153ca9ffb0, sg-03738845d45344cd8"
+  creationTimestamp: null
+  name: tekton-tirgger-ingress
+spec:
+  ingressClassName: alb
+  rules:
+  - host: tekton.oebinu.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: tekton-sample-trigger
+            port:
+              number: 80
+        path: /*
+        pathType: ImplementationSpecific

@@ -1,0 +1,52 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: tekton-sample-python-pipe
+spec:
+  params:
+  - name: repo-url
+    type: string
+  - name: image-reference
+    type: string
+  - name: kubectl-args
+    type: array
+
+  workspaces:
+  - name: shared-data
+  - name: docker-credentials
+
+  tasks:
+  - name: fetch-source
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: shared-data
+    params:
+    - name: url
+      value: $(params.repo-url)
+
+  - name: build-push
+    runAfter: ["fetch-source"]
+    taskRef:
+      name: kaniko
+    workspaces:
+      - name: source
+        workspace: shared-data
+    params:
+      - name: IMAGE
+        value: $(params.image-reference)
+
+  - name: deploy
+    runAfter: ["build-push"]
+    taskRef:
+      name: kubernetes-actions
+    workspaces:
+      - name: manifest-dir
+        workspace: shared-data
+    params:
+      - name: args
+        value: $(params.kubectl-args[*])
+    ### 아래의 코드 추가
+      - name: deployimage
+        value: $(params.image-reference)

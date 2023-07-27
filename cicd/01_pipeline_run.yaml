@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: tekton-sample-python-pipe-run- # make name automate with random index ( for re use pipelinerun yaml )
+spec:
+  serviceAccountName: tekton-build # sa for git credientials -> pipeline will use for clone private repo
+  pipelineRef: # select pipeline
+    name: tekton-sample-python-pipe
+  podTemplate: # setting taskpod
+    securityContext:  # pod security
+      fsGroup: 65532 # set volume owner gid = 65532
+  workspaces: # volume for clone code
+  - name: shared-data
+    volumeClaimTemplate: # automatically create pvc -> create pv
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+  - name: docker-credentials
+    secret:
+      secretName: docker-credentials
+
+  params: # git address
+  - name: repo-url
+    value: "https://github.com/oebinu/tekton-sample-python.git"
+  - name: image-reference
+    value: cocopopo/sample-py:v3
+  - name: kubectl-args
+    value:
+      - "apply"
+      - "-f"
+      # - "10_k8s_deploy.yaml"
+      # - "rollout"
+      # - "restart"
+      - "./6th_trigger/10_k8s_trigger.yaml"
