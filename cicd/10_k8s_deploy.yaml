@@ -11,10 +11,10 @@ spec:
     metadata: 
       name: tekton-sample-trigger
       labels: 
-        app: tekton-trigger
+        app: tekton-sample-trigger
     spec:
       containers: 
-      - name: tekton-trigger
+      - name: tekton-sample-trigger
         image: changetagname
         # image: cocopopo/tekton-sample:v4
         ports:
