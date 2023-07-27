@@ -6,7 +6,7 @@ spec:
   replicas: 2
   selector: 
     matchLabels: 
-      app: tekton-python
+      app: tekton-sample-python
   template: 
     metadata: 
       name: tekton-sample-python
