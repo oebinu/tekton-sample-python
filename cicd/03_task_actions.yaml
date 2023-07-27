@@ -51,7 +51,8 @@ spec:
         # update yaml file image name
         # sed -i "s@changetagname@$(params.deployimage)@" test.yaml
         ls -la
-        sed -i "s@changetagname@$(params.deployimage)@" ./6th_trigger/10_k8s_deploy.yaml
+        sed -i "s@changetagname@$(params.deployimage)@" ./cicd/10_k8s_deploy.yaml
+        # sed -i "s@changetagname@$(params.deployimage)@" ./6th_trigger/10_k8s_deploy.yaml
         # sed -i "s@changetagname@$(params.deployimage)@" 10_k8s_trigger.yaml
 
         # if kubeconfig workspace has bound and kubeconfig file exist, set env for kubeconfig path
