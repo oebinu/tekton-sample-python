@@ -16,15 +16,14 @@ metadata:
   name: tekton-sample-python-tt
 spec:
   params:
-    - name: giturl # git repo url
-    - name: imagetag # image tag in commit message
-  resourcetemplates: # automate create pipelinerun
+    - name: giturl
+    - name: imagetag 
+  resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
         generateName: tekton-sample-python-pipe-run-
       spec:  
-        # serviceAccountName: build-bot # sa for git & docker credientials -> pipeline will use for clone private repo
         serviceAccountName: tekton-build # sa for git credientials -> pipeline will use for clone private repo
         pipelineRef: # select pipeline
           name: tekton-sample-python-pipe
