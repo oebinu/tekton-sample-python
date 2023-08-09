@@ -43,7 +43,7 @@ spec:
           secret:
             secretName: docker-credentials
 
-        params: # git address
+        params: # git address 
         - name: repo-url
           value: $(tt.params.giturl)
         - name: image-reference
