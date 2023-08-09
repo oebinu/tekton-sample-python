@@ -1,4 +1,12 @@
 
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tekton-sa
+secrets:
+- name: git-credential-basic
+
+---
 
 apiVersion: v1
 kind: ServiceAccount
@@ -7,4 +15,12 @@ metadata:
 
 
 ---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tekton-build
+secrets:
+  - name: docker-credentials
+
 
