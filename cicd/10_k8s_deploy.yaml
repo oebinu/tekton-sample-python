@@ -15,8 +15,8 @@ spec:
     spec:
       containers: 
       - name: tekton-sample-python
-        # image: changetagname
-        image: cocopopo/tekton-sample:v4
+        image: changetagname
+        # image: cocopopo/tekton-sample:v4
         ports:
         - containerPort: 80
       ### 아래를 추가한다
