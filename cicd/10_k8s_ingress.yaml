@@ -9,7 +9,7 @@ spec:
   type: NodePort
   ports:
   - port: 80
-    targetPort: 5000
+    targetPort: 80
     protocol: TCP
   selector:
     app: tekton-sample-python
@@ -58,8 +58,8 @@ metadata:
     kubernetes.io/ingress.class: azure/application-gateway
 spec:
   rules:
-  - host: python.oebinu.com
-    http:
+  # - host: 
+  - http:
       paths:
       - backend:
           service:
