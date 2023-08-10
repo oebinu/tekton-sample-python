@@ -1,3 +1,1 @@
 # tekton-sample-python
-
-ㅜㅜ
