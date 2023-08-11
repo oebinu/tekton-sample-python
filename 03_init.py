@@ -8,7 +8,7 @@ def web():
 
 @app.route('/dog')
 def image():
-   return render_template("03_index.html")
+   return render_templater("03_index.html")
 
 if __name__ == "__main__":
    app.run(host="0.0.0.0")
